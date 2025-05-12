@@ -66,7 +66,7 @@ $NamePermutations = @(
 
 $timesGood = 0
 $timesBad = 0
-$maxTries = 10000   # note that this script due to cycling through many permutations can take hours to run (i.e. change this value to 100 for testing)
+$maxTries = 10#000   # note that this script due to cycling through many permutations can take hours to run (i.e. change this value to 100 for testing)
 
 $outputObjects = @()
 $outputFolder = '.\outputs'
@@ -78,8 +78,8 @@ $outputFile = ".\outputs\$scriptName.xml"
 
 
 # what accounts for a "third" of the deck
-$MinimumCards = 10 - 1  # for a true minimum of 10
-$MaximumCards = 20      # anything above 20 can have failures
+$MinimumCards = 5 - 1  # for a true minimum of 10
+$MaximumCards = 10      # anything above 20 can have failures
 #$MaximumCards = 26 # half the deck - this shouldn't happen in real life
 
 

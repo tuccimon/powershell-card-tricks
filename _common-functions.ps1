@@ -242,6 +242,22 @@ function Invoke-DealAndUnder {
 }
 
 
+function Remove-TopAndBottomCards {
+    # this takes in a "deck" or pile and then removes the top and bottom cards
+    # returning the remaining pile
+    param(
+        [string[]]$Deck
+    )
+
+    $totalCards = $Deck.Count
+
+    # last card index ($totalCards - 1) and then subtract 1 to "remove" that last card to get new last card index
+    $lastCardIndex = $totalCards - 2
+
+    return ($Deck[1..$lastCardIndex])
+}
+
+
 <# debugging the script variables
 
 $shuffledDeck -join ','
