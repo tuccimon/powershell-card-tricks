@@ -117,6 +117,28 @@ function Get-CardValue {
 }
 
 
+function Invoke-CutCards {
+    # takes in a deck or pile and then performs a cut (and complete if needed)
+    param(
+        [string[]]$Deck,
+        [switch]$Complete
+    )
+
+    $maxCardIndex = $Deck.Length - 1
+    $maxCutPoint = $maxCardIndex - 1 # can't cut the whole deck/pile - that wouldn't make sense
+    $cutPoint = 0..$maxCutPoint | Get-Random
+
+    if ($Complete) {
+        # cut done but now "complete" (put cut cards under remaining pile)
+        return ($Deck[($cutPoint+1)..$maxCardIndex] + $Deck[0..$cutPoint])
+    }
+    else {
+        # return cut cards only
+        return ($Deck[0..$cutPoint])
+    }
+}
+
+
 function Expand-Card {
     param(
         $Card
@@ -238,6 +260,41 @@ function Invoke-DealAndUnder {
         $newDeck += $Deck[$DealAmount..($Deck.Count-1)]        
         $newDeck += $reversedDealtPile
         $newDeck
+    }
+}
+
+function Invoke-TopToBottom {
+    # this function takes in a deck or pile and then take the top card and puts it to the bottom of the deck in hand
+    # the number of times is defaulted to 1 but more can be specified
+    param(
+        [string[]]$Deck,
+        [int]$Cards=1
+    )
+
+    $maxCardIndex = $Deck.Length - 1
+
+    if ($Cards -lt 1) {
+        Write-Error "Cards parameter value must be 1 or greater."
+        return
+    }
+    elseif ($Cards -eq $Deck.Count) {
+        # if it's equal then it will just return the Deck back
+        return ($Deck)
+    }
+    elseif ($Cards -gt $Deck.Count) {
+        if ($Cards % $Deck.Count -eq 0) {
+            # Cards is a multiple of the Deck count which means just return the Deck
+            return ($Deck)
+        }
+        else {
+            # there is a remainder
+            $realCards = $Cards - $Deck.Count
+            return ($Deck[$realCards..($maxCardIndex)] + $Deck[0..($realCards-1)])    
+        }
+    }
+    else {
+        # Cards is between 1 and Deck size minus 1
+        return ($Deck[$Cards..($maxCardIndex)] + $Deck[0..($Cards-1)])
     }
 }
 
